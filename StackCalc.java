@@ -81,8 +81,8 @@ public class StackCalc {
         else {
             if (!args[0].equals("-p") && !args[0].equals("--postfix")) {
                 // Convert args from infix to postfix
-                for (int i = 0; i < args.length - 1; i++) {
-                    argString.append(args[i + 1]);
+                for (int i = 0; i < args.length; i++) {
+                    argString.append(args[i]);
                 }
 
                 String expression = infixToPostfix(argString.toString());
