@@ -12,7 +12,6 @@ public class StackCalc {
         int returnValue;
 
         switch (ch) {
-            case '^' -> returnValue = 3;
             case '*', '/', '%' -> returnValue = 2;
             case '+', '-' -> returnValue = 1;
             default -> returnValue = -1;
@@ -53,7 +52,7 @@ public class StackCalc {
 
         while (!cStack.isEmpty()) {
             if (cStack.peek() == '(') {
-                // Status 2 means that an invalid expression was provided
+                // Status 2: Invalid expression provided
                 System.exit(2);
             }
             else {
@@ -67,6 +66,7 @@ public class StackCalc {
 
 
     private static int evaluateExpression(String expression) {
+        // TODO: Finish evaluating expression
         return -1;
     }
 
@@ -75,14 +75,14 @@ public class StackCalc {
         StringBuilder argString = new StringBuilder();
 
         if (args.length == 0) {
-            // Status 1 means there were no args provided
+            // Status 1: No args provided
             System.exit(1);
         }
         else {
             if (!args[0].equals("-p") && !args[0].equals("--postfix")) {
                 // Convert args from infix to postfix
-                for (int i = 0; i < args.length; i++) {
-                    argString.append(args[i]);
+                for (String arg : args) {
+                    argString.append(arg);
                 }
 
                 String expression = infixToPostfix(argString.toString());
