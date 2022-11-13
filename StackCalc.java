@@ -4,10 +4,23 @@ import java.lang.StringBuilder;
 /**
  * Stack-based command-line utility program
  *
+ * Who worked on what:
+ * Brody:
+ * Conversion from infix to postfix
+ *
+ * Dylan:
+ * Evaluate the expressions
+ * JavaDocs
+ *
  * @author drainey19@georgefox.edu
  * @author blee20@georgefox.edu
  */
 public class StackCalc {
+    /**
+     *
+     * @param ch
+     * @return
+     */
     private static int getPrecedence(char ch) {
         int returnValue;
 
@@ -20,7 +33,12 @@ public class StackCalc {
         return returnValue;
     }
 
-
+    /**
+     * Converts expression from infix to postfix.
+     *
+     * @param expression expression to convert
+     * @return expression in postfix notation
+     */
     private static String infixToPostfix(String expression) {
         StringBuilder result = new StringBuilder();
         Stack<Character> cStack = new Stack<>();
@@ -64,15 +82,52 @@ public class StackCalc {
         return result.toString();
     }
 
-
+    /**
+     * Checks if expression is valid.
+     *
+     * @param expression expression to be evaluated
+     * @return solved postfix
+     */
     private static int evaluateExpression(String expression) {
-        // TODO: Finish evaluating expression
-        return -1;
+        Stack<Integer> stack = new Stack<>();
+
+        for(int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+
+            if(Character.isDigit(c)) {
+                stack.push(c - '0');
+            }
+            else {
+                int val1 = stack.pop();
+                int val2 = stack.pop();
+
+                // check if decided by 0
+                if (val1 == 0 && c == '/') {
+                    System.out.println("NaN");
+                    System.exit(2);
+                }
+
+                switch (c) {
+                    case '+' -> stack.push(val2 + val1);
+                    case '-' -> stack.push(val2 - val1);
+                    case '/' -> stack.push(val2 / val1);
+                    case '*' -> stack.push(val2 * val1);
+                    case '%' -> stack.push(val2 % val1);
+                    default -> System.exit(2);
+                }
+            }
+        }
+        return stack.pop();
     }
 
-
+    /**
+     * Main method that takes arguments and solves them.
+     *
+     * @param args arguments given
+     */
     public static void main(String[] args) {
         StringBuilder argString = new StringBuilder();
+        String expression;
 
         if (args.length == 0) {
             // Status 1: No args provided
@@ -84,27 +139,16 @@ public class StackCalc {
                 for (String arg : args) {
                     argString.append(arg);
                 }
-
-                String expression = infixToPostfix(argString.toString());
-                System.out.println(expression);
-                // System.out.println(evaluateExpression(expression));
+                expression = infixToPostfix(argString.toString());
             }
+            else {
+                // check if expression is valid
+                for (int i = 1; i < args.length; i++) {
+                    argString.append(args[i]);
+                }
+                expression = argString.toString();
+            }
+            System.out.println(evaluateExpression(expression));
         }
     }
 }
-/*
-                for each token:
-                    if token is operand
-                        append token to output queue
-                    else: # token is an operator
-                        if operator is ")":
-                            pop operator stack → <op>
-                            while <op> is not "(":
-                                append <op> to output queue
-                                pop operator stack → <op>
-                        else:
-                            # pop operators until find operator w/ lower priority ->(pemdas)
-                            # push <op> to operator stack
-                    while operator stack not empty:
-                        pop operator, append it to output queue
-                 */
