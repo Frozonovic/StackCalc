@@ -1,6 +1,7 @@
 import java.util.Stack;
 import java.lang.StringBuilder;
 
+
 /**
  * Stack-based command-line utility program
  * <p>
@@ -35,6 +36,7 @@ public class StackCalc {
 
         return returnValue;
     }
+
 
     /**
      * Converts expression from infix to postfix.
@@ -80,6 +82,7 @@ public class StackCalc {
         return result.toString();
     }
 
+
     /**
      * Checks if expression is valid and solves the equation.
      * If the expression results in division by 0, prints "NaN" and exit with code 2
@@ -123,6 +126,7 @@ public class StackCalc {
         return stack.pop();
 
     }
+
 
     /**
      * Main method that takes arguments and solves them.
