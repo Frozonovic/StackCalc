@@ -3,11 +3,13 @@ import java.lang.StringBuilder;
 
 /**
  * Stack-based command-line utility program
- *
+ * <p>
  * Who worked on what:
+ * <p>
  * Brody:
  * Conversion from infix to postfix
- *
+ * JavaDocs
+ * <p>
  * Dylan:
  * Evaluate the expressions
  * JavaDocs
@@ -17,9 +19,10 @@ import java.lang.StringBuilder;
  */
 public class StackCalc {
     /**
+     * Fetches the precedence level for the given operator
      *
-     * @param ch
-     * @return
+     * @param ch Selected order of operation
+     * @return Number based on operator priority (higher numbers are higher priority)
      */
     private static int getPrecedence(char ch) {
         int returnValue;
@@ -46,13 +49,14 @@ public class StackCalc {
         for (int i = 0; i < expression.length(); ++i) {
             char c = expression.charAt(i);
 
-            if (Character.isLetterOrDigit(c)) {
+            if (Character.isLetterOrDigit(c) || c == ' ') {
                 result.append(c);
             }
             else if (c == '(') {
                 cStack.push(c);
             }
             else if (c == ')') {
+                result.append(' ');
                 while (!cStack.isEmpty() && cStack.peek() != '(') {
                     result.append(cStack.peek());
                     cStack.pop();
@@ -69,14 +73,8 @@ public class StackCalc {
         }
 
         while (!cStack.isEmpty()) {
-            if (cStack.peek() == '(') {
-                // Status 2: Invalid expression provided
-                System.exit(2);
-            }
-            else {
-                result.append(cStack.peek());
-                cStack.pop();
-            }
+            result.append(cStack.peek());
+            cStack.pop();
         }
 
         return result.toString();
@@ -104,9 +102,9 @@ public class StackCalc {
                     num = num * 10 + (c - '0');
                     i++;
                     c = expression.charAt(i);
+                    stack.push(num);
                 }
-                i--;
-                stack.push(num);
+
             }
             else {
                 int val1 = stack.pop();
@@ -144,6 +142,7 @@ public class StackCalc {
                 // Convert args from infix to postfix
                 for (String arg : args) {
                     argString.append(arg);
+                    argString.append(' ');
                 }
                 expression = infixToPostfix(argString.toString());
             }
