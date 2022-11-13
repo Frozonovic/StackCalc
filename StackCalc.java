@@ -83,7 +83,8 @@ public class StackCalc {
     }
 
     /**
-     * Checks if expression is valid.
+     * Checks if expression is valid and solves the equation.
+     * If the expression results in division by 0, prints "NaN" and exit with code 2
      *
      * @param expression expression to be evaluated
      * @return solved postfix
@@ -94,18 +95,22 @@ public class StackCalc {
         for(int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
 
-            if(Character.isDigit(c)) {
-                stack.push(c - '0');
+            if(c == ' ') {
+                continue;
+            }
+            else if(Character.isDigit(c)) {
+                int num = 0;
+                while(Character.isDigit(c)) {
+                    num = num * 10 + (c - '0');
+                    i++;
+                    c = expression.charAt(i);
+                }
+                i--;
+                stack.push(num);
             }
             else {
                 int val1 = stack.pop();
                 int val2 = stack.pop();
-
-                // check if decided by 0
-                if (val1 == 0 && c == '/') {
-                    System.out.println("NaN");
-                    System.exit(2);
-                }
 
                 switch (c) {
                     case '+' -> stack.push(val2 + val1);
@@ -118,6 +123,7 @@ public class StackCalc {
             }
         }
         return stack.pop();
+
     }
 
     /**
@@ -145,6 +151,7 @@ public class StackCalc {
                 // check if expression is valid
                 for (int i = 1; i < args.length; i++) {
                     argString.append(args[i]);
+                    argString.append(' ');
                 }
                 expression = argString.toString();
             }
